@@ -2,7 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 
-const Products = () => {
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+
+
+const Products = (props) => {
+    const { onAdd , onRemove} = props;
+    const [open, setOpen] = React.useState(false);
+    const [productData, setUser] = useState([]);
+
+    const handleClickOpen = (product) => {
+        setOpen(true);
+        console.log(product, "Shaik Akram");
+        let dataImage = product;
+        setUser(dataImage);
+        console.log(dataImage);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
 
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState(data);
@@ -76,7 +101,55 @@ const Products = () => {
                                         </p>
                                         <p className="card-text lead fw-bold">Size: {product.size}</p>
                                         <p className="card-text lead fw-bold">Price INR: {product.price}</p>
-                                        <NavLink to={`/products/${product.id}`} className="btn btn-outline-dark">Buy Now</NavLink>
+                                        {/* <NavLink to={`/products/${product.id}`} className="btn btn-outline-dark">Buy Now</NavLink> */}
+
+                                        <div>
+                                            <Button variant="outlined"
+                                                onClick={() => handleClickOpen(product)}>
+                                                Buy Now
+                                            </Button>
+                                            {/* Modal Pop Up */}
+
+                                            <Dialog
+                                                open={open}
+                                                onClose={handleClose}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">
+                                                    {`${productData.title}`}
+                                                </DialogTitle>
+                                                <DialogContent>
+                                                    <img src={productData.image} className="card-img-top" alt={productData.title} height="250px" width="250px" />
+                                                    <DialogContentText id="alert-dialog-description">
+                                                        {productData.description}
+                                                    </DialogContentText>
+                                                    <p className="lead fw-bolder">
+                                                        Rating {productData.rating && productData.rating.rate}
+                                                        <i className='fa fa-star'></i>
+                                                    </p>
+                                                    <h3 className="display-6 fw-bold my-4"> INR {productData.price}</h3>
+                                                    <div className="col-2">
+                                                        <button onClick={() => onRemove(productData)} className="btn btn-outline-danger">
+                                                            -
+                                                        </button>{' '}
+                                                        <button onClick={() => onAdd(productData)} className="btn btn-outline-info">
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <button className="btn btn-outline-dark px-4 py-2"
+                                                        onClick={() => onAdd(productData)}
+                                                    >Add to Cart</button>
+                                                    <NavLink to="/cart" className="btn btn-dark ms-2 px-3 py-2">Go to Cart</NavLink>
+
+                                                    <Button onClick={handleClose} autoFocus>
+                                                        Close
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

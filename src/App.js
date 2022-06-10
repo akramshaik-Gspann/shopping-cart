@@ -12,6 +12,7 @@ import { useState } from 'react';
 import About from './component/About';
 
 function App() {
+
   const [cartItems, setCartItems] = useState([]);
   const onAdd = (product) => {
     const exist = cartItems.find((x) => x.id === product.id);
@@ -45,7 +46,7 @@ function App() {
         <Route exact path='/about' element={<About />} />
         <Route exact path='/login' element={<LoginApp />} />
         <Route exact path='/register' element={<Register />} />
-        <Route exact path='/products' element={<Products />} />
+        <Route exact path='/products' element={<Products onAdd={onAdd}/>} />
         <Route exact path='/contact' element={<ContactAPP />} />
         <Route exact path='/products/:id' element={<Product onAdd={onAdd} />} />
         <Route exact path='/cart' element={<Basket  cartItems={cartItems} onAdd={onAdd} onRemove={onRemove} />} />
